@@ -1,0 +1,10 @@
+# Cloudflare Pages Redirects
+# Format: source destination status
+
+# Redirect /editor to /editor/
+/editor /editor/ 301
+
+# Redirect /admin to /admin/
+/admin /admin/ 301
+
+# SPA fallback (not needed for static sites)
