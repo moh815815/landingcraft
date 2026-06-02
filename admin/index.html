@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة تحكم الأدمن — LandingCraft</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07070f;
+  --surface: #0e0e1c;
+  --surface2: #15152a;
+  --surface3: #1c1c36;
+  --accent: #6c47ff;
+  --accent2: #ff4778;
+  --accent3: #47ffb8;
+  --accent4: #ffb547;
+  --text: #e8e8f4;
+  --text2: #8080aa;
+  --border: rgba(108,71,255,0.15);
+  --border2: rgba(255,255,255,0.06);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Tajawal', sans-serif;
+  min-height: 100vh;
+  display: flex;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background: radial-gradient(ellipse 60% 40% at 10% 10%, rgba(108,71,255,0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* SIDEBAR */
+.admin-sidebar {
+  width: 240px;
+  background: var(--surface);
+  border-left: 1px solid var(--border2);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; right: 0; bottom: 0;
+  z-index: 100;
+  padding: 1.5rem 0;
+}
+.sidebar-logo {
+  padding: 0 1.5rem 1.5rem;
+  border-bottom: 1px solid var(--border2);
+  margin-bottom: 1rem;
+}
+.sidebar-logo a {
+  font-weight: 900;
+  font-size: 1.2rem;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-decoration: none;
+}
+.sidebar-logo span {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--text2);
+  font-weight: 400;
+  margin-top: 0.2rem;
+  -webkit-text-fill-color: var(--text2);
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem 1.5rem;
+  color: var(--text2);
+  text-decoration: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  border-left: 3px solid transparent;
+}
+.nav-item:hover { background: var(--surface2); color: var(--text); }
+.nav-item.active { background: rgba(108,71,255,0.1); color: var(--accent); border-left-color: var(--accent); }
+.nav-item .icon { font-size: 1.1rem; width: 20px; text-align: center; }
+.sidebar-section-title {
+  padding: 1rem 1.5rem 0.4rem;
+  font-size: 0.65rem;
+  font-family: 'DM Mono', monospace;
+  color: var(--text2);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.sidebar-bottom {
+  margin-top: auto;
+  border-top: 1px solid var(--border2);
+  padding-top: 1rem;
+}
+.admin-badge {
+  margin: 0 1.5rem;
+  padding: 0.6rem 0.8rem;
+  background: rgba(108,71,255,0.1);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.admin-badge .avatar {
+  width: 30px; height: 30px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem;
+}
+.admin-badge .name { font-size: 0.8rem; font-weight: 600; }
+.admin-badge .role { font-size: 0.7rem; color: var(--text2); }
+
+/* MAIN */
+.admin-main {
+  margin-right: 240px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.topbar {
+  padding: 1.2rem 2rem;
+  border-bottom: 1px solid var(--border2);
+  background: rgba(14,14,28,0.9);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0; z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.page-title { font-size: 1.2rem; font-weight: 800; }
+.topbar-right { display: flex; gap: 0.8rem; align-items: center; }
+.btn {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.5rem 1.2rem; border-radius: 8px;
+  font-family: 'Tajawal', sans-serif; font-size: 0.9rem; font-weight: 600;
+  cursor: pointer; transition: all 0.15s; border: none; text-decoration: none;
+}
+.btn-primary { background: linear-gradient(135deg, var(--accent), #8f6fff); color: #fff; }
+.btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-ghost { background: transparent; color: var(--text2); border: 1px solid var(--border2); }
+.btn-ghost:hover { background: var(--surface2); color: var(--text); }
+.btn-danger { background: rgba(255,71,120,0.1); color: var(--accent2); border: 1px solid rgba(255,71,120,0.2); }
+.btn-danger:hover { background: rgba(255,71,120,0.2); }
+.btn-sm { padding: 0.35rem 0.8rem; font-size: 0.8rem; }
+
+/* CONTENT */
+.content { padding: 2rem; flex: 1; }
+
+/* SECTION */
+.section { display: none; }
+.section.active { display: block; }
+
+/* STATS CARDS */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+}
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+.stat-card:hover { border-color: var(--border); transform: translateY(-2px); }
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 80px; height: 80px;
+  background: radial-gradient(circle at top right, var(--card-color, var(--accent)) 0%, transparent 70%);
+  opacity: 0.15;
+}
+.stat-icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
+.stat-value { font-size: 2rem; font-weight: 900; color: var(--card-color, var(--accent)); }
+.stat-label { font-size: 0.85rem; color: var(--text2); margin-top: 0.2rem; }
+.stat-change { font-size: 0.75rem; color: var(--accent3); margin-top: 0.5rem; }
+
+/* SECTION HEADER */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+.section-header h2 { font-size: 1.1rem; font-weight: 700; }
+.section-header span { font-size: 0.8rem; color: var(--text2); }
+
+/* TABLE */
+.table-container {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+table { width: 100%; border-collapse: collapse; }
+th {
+  padding: 0.9rem 1.2rem;
+  text-align: right;
+  font-size: 0.75rem;
+  font-family: 'DM Mono', monospace;
+  color: var(--text2);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border2);
+}
+td {
+  padding: 1rem 1.2rem;
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--border2);
+  vertical-align: middle;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(108,71,255,0.04); }
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.badge-green { background: rgba(71,255,184,0.1); color: var(--accent3); border: 1px solid rgba(71,255,184,0.2); }
+.badge-blue { background: rgba(108,71,255,0.1); color: #a08fff; border: 1px solid rgba(108,71,255,0.2); }
+.badge-orange { background: rgba(255,181,71,0.1); color: var(--accent4); border: 1px solid rgba(255,181,71,0.2); }
+.badge-red { background: rgba(255,71,120,0.1); color: var(--accent2); border: 1px solid rgba(255,71,120,0.2); }
+.td-actions { display: flex; gap: 0.5rem; }
+
+/* EMPTY STATE */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text2);
+}
+.empty-state .icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.4; }
+.empty-state p { font-size: 0.9rem; opacity: 0.6; }
+
+/* CHART */
+.chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.5rem; }
+.chart-card {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  padding: 1.5rem;
+}
+.chart-title { font-size: 0.85rem; font-weight: 700; margin-bottom: 1.2rem; color: var(--text2); }
+.bar-chart { display: flex; align-items: flex-end; gap: 0.5rem; height: 120px; }
+.bar {
+  flex: 1; background: linear-gradient(180deg, var(--accent) 0%, rgba(108,71,255,0.3) 100%);
+  border-radius: 4px 4px 0 0;
+  transition: opacity 0.2s;
+  position: relative;
+}
+.bar:hover { opacity: 0.8; }
+.bar-labels { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
+.bar-label { flex: 1; text-align: center; font-size: 0.65rem; color: var(--text2); }
+.mini-stats { display: flex; flex-direction: column; gap: 0.8rem; }
+.mini-stat-row { display: flex; align-items: center; justify-content: space-between; }
+.mini-stat-label { font-size: 0.85rem; color: var(--text2); }
+.mini-stat-val { font-size: 0.9rem; font-weight: 700; color: var(--text); }
+.progress-bar { height: 4px; background: var(--surface3); border-radius: 4px; margin-top: 0.2rem; }
+.progress-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--accent), var(--accent3)); }
+
+/* FORMS */
+.form-card {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.form-row { margin-bottom: 1rem; }
+.form-label { font-size: 0.82rem; color: var(--text2); margin-bottom: 0.4rem; display: block; }
+.form-input {
+  width: 100%; background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 8px; padding: 0.6rem 0.9rem;
+  color: var(--text); font-family: 'Tajawal', sans-serif; font-size: 0.9rem;
+  outline: none; transition: border-color 0.15s;
+}
+.form-input:focus { border-color: var(--accent); }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+/* NOTIFICATION */
+.notif {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--border2);
+  margin-bottom: 0.7rem;
+  font-size: 0.85rem;
+  transition: background 0.15s;
+}
+.notif:hover { background: var(--surface2); }
+.notif-icon { font-size: 1.2rem; flex-shrink: 0; }
+.notif-title { font-weight: 600; margin-bottom: 0.2rem; }
+.notif-time { font-size: 0.75rem; color: var(--text2); }
+.notif.unread { background: rgba(108,71,255,0.05); border-color: rgba(108,71,255,0.2); }
+
+/* Quick actions */
+.quick-actions { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+.quick-action {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-decoration: none;
+  color: var(--text);
+}
+.quick-action:hover { border-color: var(--accent); background: rgba(108,71,255,0.05); }
+.quick-action .qa-icon { font-size: 1.4rem; }
+.quick-action .qa-text { font-size: 0.85rem; }
+.quick-action .qa-label { font-weight: 700; }
+.quick-action .qa-sub { color: var(--text2); font-size: 0.75rem; }
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 0.7rem 1.5rem; font-size: 0.9rem; z-index: 2000;
+  transition: transform 0.3s; white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.success { border-color: rgba(71,255,184,0.4); color: var(--accent3); }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="admin-sidebar">
+  <div class="sidebar-logo">
+    <a href="/">⚡ LandingCraft</a>
+    <span>لوحة التحكم</span>
+  </div>
+
+  <div class="sidebar-section-title">الرئيسية</div>
+  <div class="nav-item active" onclick="showSection('dashboard', this)">
+    <span class="icon">📊</span> لوحة التحكم
+  </div>
+
+  <div class="sidebar-section-title">إدارة المحتوى</div>
+  <div class="nav-item" onclick="showSection('pages', this)">
+    <span class="icon">📄</span> الصفحات
+  </div>
+  <div class="nav-item" onclick="showSection('forms', this)">
+    <span class="icon">📋</span> النماذج المرسلة
+  </div>
+  <div class="nav-item" onclick="showSection('analytics', this)">
+    <span class="icon">📈</span> التحليلات
+  </div>
+
+  <div class="sidebar-section-title">الإعدادات</div>
+  <div class="nav-item" onclick="showSection('settings', this)">
+    <span class="icon">⚙️</span> الإعدادات العامة
+  </div>
+  <div class="nav-item" onclick="showSection('users', this)">
+    <span class="icon">👥</span> المستخدمون
+  </div>
+  <div class="nav-item" onclick="showSection('notifications', this)">
+    <span class="icon">🔔</span> الإشعارات
+    <span style="margin-right:auto;background:var(--accent2);color:white;font-size:0.65rem;padding:0.1rem 0.4rem;border-radius:100px">3</span>
+  </div>
+
+  <div class="sidebar-bottom">
+    <div class="admin-badge">
+      <div class="avatar">👑</div>
+      <div>
+        <div class="name">الأدمن</div>
+        <div class="role">مدير النظام</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="admin-main">
+  <div class="topbar">
+    <span class="page-title" id="currentPageTitle">📊 لوحة التحكم</span>
+    <div class="topbar-right">
+      <span style="font-size:0.8rem;color:var(--text2)" id="currentDateTime"></span>
+      <a href="/editor/" class="btn btn-primary">🎨 فتح المحرر</a>
+      <a href="/" class="btn btn-ghost">🏠 الرئيسية</a>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- DASHBOARD SECTION -->
+    <div class="section active" id="section-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card" style="--card-color:#6c47ff">
+          <div class="stat-icon">📄</div>
+          <div class="stat-value" id="stat-pages">0</div>
+          <div class="stat-label">إجمالي الصفحات</div>
+          <div class="stat-change">↑ +0 هذا الشهر</div>
+        </div>
+        <div class="stat-card" style="--card-color:#47ffb8">
+          <div class="stat-icon">👁</div>
+          <div class="stat-value">1,284</div>
+          <div class="stat-label">زيارات اليوم</div>
+          <div class="stat-change">↑ +12% من أمس</div>
+        </div>
+        <div class="stat-card" style="--card-color:#ffb547">
+          <div class="stat-icon">📋</div>
+          <div class="stat-value" id="stat-forms">0</div>
+          <div class="stat-label">نماذج مرسلة</div>
+          <div class="stat-change">↑ +3 اليوم</div>
+        </div>
+        <div class="stat-card" style="--card-color:#ff4778">
+          <div class="stat-icon">📊</div>
+          <div class="stat-value">8.4%</div>
+          <div class="stat-label">معدل التحويل</div>
+          <div class="stat-change">↑ +1.2% هذا الأسبوع</div>
+        </div>
+      </div>
+
+      <div class="quick-actions">
+        <a href="/editor/" class="quick-action">
+          <span class="qa-icon">🎨</span>
+          <div class="qa-text">
+            <div class="qa-label">إنشاء صفحة جديدة</div>
+            <div class="qa-sub">افتح المحرر</div>
+          </div>
+        </a>
+        <div class="quick-action" onclick="showSection('pages', document.querySelector('[onclick*=\"pages\"]'))">
+          <span class="qa-icon">📄</span>
+          <div class="qa-text">
+            <div class="qa-label">إدارة الصفحات</div>
+            <div class="qa-sub">عرض جميع الصفحات</div>
+          </div>
+        </div>
+        <div class="quick-action" onclick="showSection('forms', document.querySelector('[onclick*=\"forms\"]'))">
+          <span class="qa-icon">📋</span>
+          <div class="qa-text">
+            <div class="qa-label">النماذج الواردة</div>
+            <div class="qa-sub">بيانات العملاء</div>
+          </div>
+        </div>
+        <div class="quick-action" onclick="showSection('analytics', document.querySelector('[onclick*=\"analytics\"]'))">
+          <span class="qa-icon">📈</span>
+          <div class="qa-text">
+            <div class="qa-label">التحليلات</div>
+            <div class="qa-sub">إحصائيات مفصلة</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-row">
+        <div class="chart-card">
+          <div class="chart-title">الزيارات — آخر 7 أيام</div>
+          <div class="bar-chart" id="visitsChart"></div>
+          <div class="bar-labels" id="visitsLabels"></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">أداء الصفحات</div>
+          <div class="mini-stats" id="pagesPerf"></div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <h2>آخر الصفحات المعدّلة</h2>
+        <span id="pages-count-label">0 صفحة</span>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>اسم الصفحة</th>
+              <th>العناصر</th>
+              <th>آخر تعديل</th>
+              <th>الإجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="recent-pages-table">
+            <tr><td colspan="4"><div class="empty-state"><div class="icon">📭</div><p>لا توجد صفحات بعد</p></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PAGES SECTION -->
+    <div class="section" id="section-pages">
+      <div class="section-header">
+        <h2>📄 جميع الصفحات</h2>
+        <div style="display:flex;gap:0.7rem">
+          <a href="/editor/" class="btn btn-primary">+ صفحة جديدة</a>
+        </div>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>اسم الصفحة</th>
+              <th>العناصر</th>
+              <th>تاريخ الإنشاء</th>
+              <th>آخر تعديل</th>
+              <th>الإجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="all-pages-table">
+            <tr><td colspan="6"><div class="empty-state"><div class="icon">📭</div><p>لا توجد صفحات بعد. <a href="/editor/" style="color:var(--accent)">أنشئ صفحتك الأولى!</a></p></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FORMS SECTION -->
+    <div class="section" id="section-forms">
+      <div class="section-header">
+        <h2>📋 النماذج المرسلة</h2>
+        <button class="btn btn-ghost btn-sm" onclick="clearForms()">🗑 مسح الكل</button>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>الاسم</th>
+              <th>البريد الإلكتروني</th>
+              <th>الرسالة</th>
+              <th>الصفحة</th>
+              <th>التاريخ</th>
+            </tr>
+          </thead>
+          <tbody id="forms-table">
+            <tr><td colspan="5"><div class="empty-state"><div class="icon">📭</div><p>لا توجد نماذج مرسلة بعد</p></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Demo form entry -->
+      <div class="form-card">
+        <div style="font-size:0.85rem;font-weight:700;margin-bottom:1rem;color:var(--text2)">// إضافة بيانات تجريبية</div>
+        <div class="form-grid">
+          <div class="form-row">
+            <label class="form-label">الاسم</label>
+            <input class="form-input" id="demo-name" placeholder="أحمد محمد">
+          </div>
+          <div class="form-row">
+            <label class="form-label">البريد الإلكتروني</label>
+            <input class="form-input" id="demo-email" type="email" placeholder="ahmed@example.com">
+          </div>
+        </div>
+        <div class="form-row">
+          <label class="form-label">الرسالة</label>
+          <textarea class="form-input" id="demo-msg" rows="2" placeholder="رسالة تجريبية..."></textarea>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="addDemoForm()">+ إضافة</button>
+      </div>
+    </div>
+
+    <!-- ANALYTICS SECTION -->
+    <div class="section" id="section-analytics">
+      <div class="section-header">
+        <h2>📈 التحليلات</h2>
+        <span>آخر 30 يوم</span>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card" style="--card-color:#6c47ff">
+          <div class="stat-icon">👁</div>
+          <div class="stat-value">42,190</div>
+          <div class="stat-label">إجمالي الزيارات</div>
+          <div class="stat-change">↑ +18% من الشهر الماضي</div>
+        </div>
+        <div class="stat-card" style="--card-color:#47ffb8">
+          <div class="stat-icon">⏱</div>
+          <div class="stat-value">2:34</div>
+          <div class="stat-label">متوسط وقت الجلسة</div>
+          <div class="stat-change">↑ +8s من الشهر الماضي</div>
+        </div>
+        <div class="stat-card" style="--card-color:#ffb547">
+          <div class="stat-icon">📊</div>
+          <div class="stat-value">8.4%</div>
+          <div class="stat-label">معدل التحويل</div>
+          <div class="stat-change">↑ +1.2% من الشهر الماضي</div>
+        </div>
+        <div class="stat-card" style="--card-color:#ff4778">
+          <div class="stat-icon">🚪</div>
+          <div class="stat-value">42%</div>
+          <div class="stat-label">معدل الارتداد</div>
+          <div class="stat-change">↓ -3% تحسن!</div>
+        </div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-card">
+          <div class="chart-title">مصادر الزيارات</div>
+          <div class="mini-stats">
+            <div>
+              <div class="mini-stat-row"><span class="mini-stat-label">🔍 محركات البحث</span><span class="mini-stat-val">52%</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:52%"></div></div>
+            </div>
+            <div>
+              <div class="mini-stat-row"><span class="mini-stat-label">📱 وسائل التواصل</span><span class="mini-stat-val">28%</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:28%;background:linear-gradient(90deg,var(--accent2),#ff8fab)"></div></div>
+            </div>
+            <div>
+              <div class="mini-stat-row"><span class="mini-stat-label">🔗 روابط مباشرة</span><span class="mini-stat-val">15%</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:15%;background:linear-gradient(90deg,var(--accent4),#ffd47e)"></div></div>
+            </div>
+            <div>
+              <div class="mini-stat-row"><span class="mini-stat-label">📧 البريد الإلكتروني</span><span class="mini-stat-val">5%</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:5%;background:linear-gradient(90deg,var(--accent3),#a0ffdc)"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">الأجهزة المستخدمة</div>
+          <div class="mini-stats">
+            <div>
+              <div class="mini-stat-row"><span class="mini-stat-label">📱 موبايل</span><span class="mini-stat-val">61%</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:61%"></div></div>
+            </div>
+            <div>
+              <div class="mini-stat-row"><span class="mini-stat-label">🖥 سطح مكتب</span><span class="mini-stat-val">31%</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:31%;background:linear-gradient(90deg,var(--accent2),#ff8fab)"></div></div>
+            </div>
+            <div>
+              <div class="mini-stat-row"><span class="mini-stat-label">📟 تابلت</span><span class="mini-stat-val">8%</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:8%;background:linear-gradient(90deg,var(--accent4),#ffd47e)"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS SECTION -->
+    <div class="section" id="section-settings">
+      <div class="section-header"><h2>⚙️ الإعدادات العامة</h2></div>
+      <div class="form-card">
+        <div style="font-size:0.85rem;font-weight:700;margin-bottom:1.2rem;color:var(--text2)">// معلومات الموقع</div>
+        <div class="form-grid">
+          <div class="form-row">
+            <label class="form-label">اسم الموقع</label>
+            <input class="form-input" value="LandingCraft" id="site-name">
+          </div>
+          <div class="form-row">
+            <label class="form-label">رابط الموقع</label>
+            <input class="form-input" value="https://landingcraft.pages.dev">
+          </div>
+        </div>
+        <div class="form-row">
+          <label class="form-label">وصف الموقع</label>
+          <textarea class="form-input" rows="2">منشئ صفحات الهبوط الاحترافي</textarea>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="saveSettings()">💾 حفظ الإعدادات</button>
+      </div>
+      <div class="form-card">
+        <div style="font-size:0.85rem;font-weight:700;margin-bottom:1.2rem;color:var(--text2)">// إعدادات البريد الإلكتروني</div>
+        <div class="form-grid">
+          <div class="form-row">
+            <label class="form-label">بريد الإشعارات</label>
+            <input class="form-input" type="email" placeholder="admin@example.com">
+          </div>
+          <div class="form-row">
+            <label class="form-label">إشعارات النماذج</label>
+            <select class="form-input">
+              <option>فوري</option>
+              <option>يومي</option>
+              <option>أسبوعي</option>
+              <option>معطّل</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="saveSettings()">💾 حفظ</button>
+      </div>
+      <div class="form-card">
+        <div style="font-size:0.85rem;font-weight:700;margin-bottom:1.2rem;color:var(--text2)">// خطر — إعادة الضبط</div>
+        <p style="color:var(--text2);font-size:0.85rem;margin-bottom:1rem">حذف جميع الصفحات المحفوظة نهائياً</p>
+        <button class="btn btn-danger btn-sm" onclick="resetAll()">🗑 حذف كل البيانات</button>
+      </div>
+    </div>
+
+    <!-- USERS SECTION -->
+    <div class="section" id="section-users">
+      <div class="section-header">
+        <h2>👥 المستخدمون</h2>
+        <button class="btn btn-primary btn-sm" onclick="addUser()">+ إضافة مستخدم</button>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr><th>المستخدم</th><th>البريد الإلكتروني</th><th>الدور</th><th>الحالة</th><th>الإجراءات</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:0.7rem"><div style="width:32px;height:32px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.8rem">👑</div><div><div style="font-weight:600">الأدمن</div><div style="font-size:0.75rem;color:var(--text2)">مدير النظام</div></div></div></td>
+              <td><span style="color:var(--text2)">admin@landingcraft.dev</span></td>
+              <td><span class="badge badge-blue">أدمن</span></td>
+              <td><span class="badge badge-green">● نشط</span></td>
+              <td><div class="td-actions"><button class="btn btn-ghost btn-sm">تعديل</button></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- NOTIFICATIONS SECTION -->
+    <div class="section" id="section-notifications">
+      <div class="section-header">
+        <h2>🔔 الإشعارات</h2>
+        <button class="btn btn-ghost btn-sm" onclick="markAllRead()">قراءة الكل</button>
+      </div>
+      <div id="notifications-list">
+        <div class="notif unread">
+          <span class="notif-icon">📋</span>
+          <div>
+            <div class="notif-title">نموذج جديد من أحمد محمد</div>
+            <div style="color:var(--text2);font-size:0.82rem;margin-bottom:0.2rem">أرسل رسالة من صفحة "الرئيسية"</div>
+            <div class="notif-time">منذ 5 دقائق</div>
+          </div>
+        </div>
+        <div class="notif unread">
+          <span class="notif-icon">📄</span>
+          <div>
+            <div class="notif-title">تم إنشاء صفحة جديدة</div>
+            <div style="color:var(--text2);font-size:0.82rem;margin-bottom:0.2rem">صفحة "قالب SaaS" تم إنشاؤها</div>
+            <div class="notif-time">منذ 1 ساعة</div>
+          </div>
+        </div>
+        <div class="notif unread">
+          <span class="notif-icon">🚀</span>
+          <div>
+            <div class="notif-title">مرحباً بك في LandingCraft!</div>
+            <div style="color:var(--text2);font-size:0.82rem;margin-bottom:0.2rem">تم تثبيت النظام بنجاح وجاهز للاستخدام</div>
+            <div class="notif-time">اليوم</div>
+          </div>
+        </div>
+        <div class="notif">
+          <span class="notif-icon">📊</span>
+          <div>
+            <div class="notif-title">تقرير الأداء الأسبوعي</div>
+            <div style="color:var(--text2);font-size:0.82rem;margin-bottom:0.2rem">+18% زيادة في الزيارات مقارنة بالأسبوع الماضي</div>
+            <div class="notif-time">أمس</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ===================================================
+// DATA FROM LOCALSTORAGE
+// ===================================================
+function getPages() { return JSON.parse(localStorage.getItem('lc_pages') || '[]'); }
+function getForms() { return JSON.parse(localStorage.getItem('lc_forms') || '[]'); }
+function saveForms(forms) { localStorage.setItem('lc_forms', JSON.stringify(forms)); }
+
+function formatDate(ts) {
+  if(!ts) return '—';
+  const d = new Date(ts);
+  return d.toLocaleDateString('ar-EG', { year:'numeric', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
+}
+
+// ===================================================
+// NAVIGATION
+// ===================================================
+function showSection(name, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('section-' + name).classList.add('active');
+  if(el) el.classList.add('active');
+  const titles = { dashboard:'📊 لوحة التحكم', pages:'📄 الصفحات', forms:'📋 النماذج المرسلة', analytics:'📈 التحليلات', settings:'⚙️ الإعدادات', users:'👥 المستخدمون', notifications:'🔔 الإشعارات' };
+  document.getElementById('currentPageTitle').textContent = titles[name] || name;
+  if(name === 'pages') loadPagesTable();
+  if(name === 'forms') loadFormsTable();
+  if(name === 'dashboard') loadDashboard();
+}
+
+// ===================================================
+// DASHBOARD
+// ===================================================
+function loadDashboard() {
+  const pages = getPages();
+  const forms = getForms();
+  document.getElementById('stat-pages').textContent = pages.length;
+  document.getElementById('stat-forms').textContent = forms.length;
+  document.getElementById('pages-count-label').textContent = pages.length + ' صفحة';
+
+  // Recent pages
+  const tbody = document.getElementById('recent-pages-table');
+  if(pages.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><div class="icon">📭</div><p>لا توجد صفحات بعد. <a href="/editor/" style="color:var(--accent)">أنشئ أول صفحة!</a></p></div></td></tr>';
+  } else {
+    tbody.innerHTML = pages.slice(0,5).map(p => `
+      <tr>
+        <td><strong>${p.name}</strong></td>
+        <td><span class="badge badge-blue">${p.blocks?.length||0} عنصر</span></td>
+        <td><span style="color:var(--text2);font-size:0.82rem">${formatDate(p.updatedAt)}</span></td>
+        <td><div class="td-actions">
+          <a href="/editor/" class="btn btn-ghost btn-sm">✏ تعديل</a>
+          <button onclick="deletePage('${p.id}')" class="btn btn-danger btn-sm">🗑</button>
+        </div></td>
+      </tr>
+    `).join('');
+  }
+
+  // Bar chart
+  const data = [420, 580, 390, 720, 650, 830, 1284];
+  const labels = ['الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت','اليوم'];
+  const maxVal = Math.max(...data);
+  document.getElementById('visitsChart').innerHTML = data.map((v,i) => 
+    `<div class="bar" style="height:${(v/maxVal)*100}%" title="${labels[i]}: ${v} زيارة"></div>`
+  ).join('');
+  document.getElementById('visitsLabels').innerHTML = labels.map(l => `<div class="bar-label">${l}</div>`).join('');
+
+  // Pages performance
+  const perf = pages.slice(0,4).map(p => ({ name: p.name, pct: Math.floor(Math.random()*80)+20 }));
+  if(perf.length === 0) perf.push({ name: 'لا توجد صفحات بعد', pct: 0 });
+  document.getElementById('pagesPerf').innerHTML = perf.map(p => `
+    <div>
+      <div class="mini-stat-row"><span class="mini-stat-label">${p.name}</span><span class="mini-stat-val">${p.pct}%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${p.pct}%"></div></div>
+    </div>
+  `).join('');
+}
+
+// ===================================================
+// PAGES TABLE
+// ===================================================
+function loadPagesTable() {
+  const pages = getPages();
+  const tbody = document.getElementById('all-pages-table');
+  if(pages.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="icon">📭</div><p>لا توجد صفحات بعد. <a href="/editor/" style="color:var(--accent)">أنشئ صفحتك الأولى!</a></p></div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = pages.map((p, i) => `
+    <tr>
+      <td><span style="color:var(--text2)">${i+1}</span></td>
+      <td><strong>${p.name}</strong></td>
+      <td><span class="badge badge-blue">${p.blocks?.length||0} عنصر</span></td>
+      <td><span style="color:var(--text2);font-size:0.82rem">${formatDate(p.createdAt)}</span></td>
+      <td><span style="color:var(--text2);font-size:0.82rem">${formatDate(p.updatedAt)}</span></td>
+      <td><div class="td-actions">
+        <a href="/editor/" class="btn btn-ghost btn-sm" onclick="localStorage.setItem('lc_load_page','${p.id}')">✏ تعديل</a>
+        <button onclick="exportPage('${p.id}')" class="btn btn-ghost btn-sm">⬇ تصدير</button>
+        <button onclick="deletePage('${p.id}')" class="btn btn-danger btn-sm">🗑</button>
+      </div></td>
+    </tr>
+  `).join('');
+}
+
+function deletePage(id) {
+  if(!confirm('هل أنت متأكد من حذف هذه الصفحة؟')) return;
+  let pages = getPages();
+  pages = pages.filter(p => p.id !== id);
+  localStorage.setItem('lc_pages', JSON.stringify(pages));
+  showToast('🗑 تم الحذف');
+  loadDashboard();
+  loadPagesTable();
+}
+
+function exportPage(id) {
+  const pages = getPages();
+  const page = pages.find(p => p.id === id);
+  if(!page) return;
+  // Simple export
+  const name = page.name;
+  const content = (page.blocks||[]).map(b => {
+    const templates = getBlockRenderers();
+    return templates[b.type] ? templates[b.type](b.props) : '';
+  }).join('\n');
+  const html = `<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>${name}</title><link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Tajawal,sans-serif}img{max-width:100%}</style></head><body>${content}</body></html>`;
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name.replace(/\s/g,'-') + '.html'; a.click();
+  showToast('⬇ تم التصدير!', 'success');
+}
+
+// Simple block renderers for admin export
+function getBlockRenderers() {
+  return {
+    hero: (p) => `<div style="background:${p.bgColor};padding:${p.paddingY}px 40px;text-align:${p.align}"><h1 style="color:${p.textColor};font-size:3rem;font-weight:900;font-family:Tajawal,sans-serif;margin-bottom:1rem">${p.title}</h1><p style="color:${p.textColor}99;font-size:1.1rem;max-width:600px;margin:0 auto 2rem;font-family:Tajawal,sans-serif">${p.subtitle}</p><a href="${p.ctaUrl}" style="background:${p.ctaColor};color:white;padding:0.9rem 2.5rem;border-radius:10px;text-decoration:none;font-family:Tajawal,sans-serif;font-weight:700">${p.ctaText}</a></div>`,
+    heading: (p) => `<div style="background:${p.bgColor};padding:${p.paddingY}px 40px;text-align:${p.align}"><h2 style="font-size:${p.size}px;color:${p.color};font-family:Tajawal,sans-serif;font-weight:800">${p.text}</h2></div>`,
+    paragraph: (p) => `<div style="background:${p.bgColor};padding:${p.paddingY}px 40px;text-align:${p.align}"><p style="font-size:${p.size}px;color:${p.color};font-family:Tajawal,sans-serif;line-height:1.8;max-width:700px;margin:0 auto">${p.text}</p></div>`,
+    button: (p) => `<div style="background:${p.bgColor};padding:${p.paddingY}px 40px;text-align:${p.align}"><a href="${p.url}" style="background:${p.color};color:${p.textColor};padding:0.8rem 2.5rem;border-radius:${p.radius}px;text-decoration:none;font-family:Tajawal,sans-serif;font-weight:700">${p.text}</a></div>`,
+    divider: (p) => `<div style="background:${p.bgColor};padding:${p.marginY}px 40px"><hr style="border:none;border-top:${p.thickness}px solid ${p.color}"></div>`,
+  };
+}
+
+// ===================================================
+// FORMS
+// ===================================================
+function loadFormsTable() {
+  const forms = getForms();
+  const tbody = document.getElementById('forms-table');
+  if(forms.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="icon">📭</div><p>لا توجد نماذج مرسلة بعد</p></div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = forms.map(f => `
+    <tr>
+      <td><strong>${f.name||'—'}</strong></td>
+      <td><span style="color:var(--accent)">${f.email||'—'}</span></td>
+      <td><span style="color:var(--text2);font-size:0.85rem">${f.message||'—'}</span></td>
+      <td><span class="badge badge-blue">${f.page||'غير محدد'}</span></td>
+      <td><span style="color:var(--text2);font-size:0.8rem">${formatDate(f.date)}</span></td>
+    </tr>
+  `).join('');
+}
+
+function addDemoForm() {
+  const name = document.getElementById('demo-name').value || 'مستخدم مجهول';
+  const email = document.getElementById('demo-email').value || 'test@example.com';
+  const msg = document.getElementById('demo-msg').value || 'رسالة تجريبية';
+  const forms = getForms();
+  forms.unshift({ name, email, message: msg, page: 'صفحة رئيسية', date: Date.now() });
+  saveForms(forms);
+  document.getElementById('demo-name').value = '';
+  document.getElementById('demo-email').value = '';
+  document.getElementById('demo-msg').value = '';
+  loadFormsTable();
+  showToast('✅ تم إضافة النموذج', 'success');
+}
+
+function clearForms() {
+  if(!confirm('حذف جميع النماذج؟')) return;
+  saveForms([]);
+  loadFormsTable();
+  showToast('🗑 تم مسح النماذج');
+}
+
+// ===================================================
+// SETTINGS
+// ===================================================
+function saveSettings() {
+  const name = document.getElementById('site-name').value;
+  localStorage.setItem('lc_site_name', name);
+  document.querySelector('.sidebar-logo a').textContent = '⚡ ' + name;
+  showToast('💾 تم حفظ الإعدادات', 'success');
+}
+
+function resetAll() {
+  if(!confirm('⚠️ سيتم حذف جميع البيانات نهائياً! هل أنت متأكد؟')) return;
+  if(!confirm('تأكيد أخير: حذف كل شيء؟')) return;
+  localStorage.removeItem('lc_pages');
+  localStorage.removeItem('lc_forms');
+  showToast('🗑 تم حذف جميع البيانات');
+  loadDashboard();
+}
+
+// ===================================================
+// USERS
+// ===================================================
+function addUser() {
+  const email = prompt('أدخل بريد المستخدم الجديد:');
+  if(!email) return;
+  showToast('✅ تم إضافة المستخدم: ' + email, 'success');
+}
+
+// ===================================================
+// NOTIFICATIONS
+// ===================================================
+function markAllRead() {
+  document.querySelectorAll('.notif.unread').forEach(n => n.classList.remove('unread'));
+  showToast('✅ تم تحديد الكل كمقروء', 'success');
+}
+
+// ===================================================
+// UTILS
+// ===================================================
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast show' + (type ? ' ' + type : '');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function updateDateTime() {
+  const now = new Date();
+  document.getElementById('currentDateTime').textContent = now.toLocaleString('ar-EG', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+}
+setInterval(updateDateTime, 1000);
+updateDateTime();
+
+// Init
+loadDashboard();
+</script>
+</body>
+</html>
